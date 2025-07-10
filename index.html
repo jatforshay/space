@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Needs Awareness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Modern color palette */
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #F7F8FA;
+            --bg-hover: #F3F4F6;
+            
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --text-tertiary: #9CA3AF;
+            
+            --accent-primary: #6366F1;
+            --accent-primary-hover: #5558E3;
+            --accent-muted: #E0E7FF;
+            --accent-subtle: #F5F3FF;
+            
+            --border-color: #E5E7EB;
+            --border-focus: #6366F1;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            
+            --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0A0A0A;
+                --bg-secondary: #1A1A1A;
+                --bg-tertiary: #262626;
+                --bg-hover: #2A2A2A;
+                
+                --text-primary: #FAFAFA;
+                --text-secondary: #A1A1AA;
+                --text-tertiary: #71717A;
+                
+                --accent-primary: #818CF8;
+                --accent-primary-hover: #6366F1;
+                --accent-muted: #312E81;
+                --accent-subtle: #1E1B4B;
+                
+                --border-color: #2E2E2E;
+                --border-focus: #818CF8;
+                
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            transition: var(--transition-smooth);
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header with glassmorphism effect */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .header {
+                background: rgba(26, 26, 26, 0.8);
+            }
+        }
+
+        .header-content {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-display {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        /* Modern navigation tabs */
+        .navigation {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--bg-tertiary);
+            padding: 0.25rem;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .nav-button {
+            position: relative;
+            padding: 0.625rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-family: inherit;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        .nav-button:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-button.active {
+            color: var(--text-primary);
+        }
+
+        /* Sliding indicator */
+        .nav-indicator {
+            position: absolute;
+            top: 0.25rem;
+            left: 0.25rem;
+            height: calc(100% - 0.5rem);
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-smooth);
+            z-index: 1;
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            max-width: 740px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1.25rem 4rem;
+        }
+
+        /* Modern card design */
+        .content-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .section-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        /* Question blocks with modern styling */
+        .question-block {
+            margin-bottom: 2rem;
+        }
+
+        .question-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-label {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .optional-badge {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            background: var(--bg-tertiary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+
+        .helper-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        /* Modern textarea design */
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            resize: vertical;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-glow);
+            background-color: var(--bg-secondary);
+        }
+
+        textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .large-textarea {
+            min-height: 180px;
+        }
+
+        /* Modern info box */
+        .info-box {
+            background: var(--accent-subtle);
+            border: 1px solid var(--accent-muted);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-primary);
+        }
+
+        .info-box-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Save indicator with modern animation */
+        .save-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.875rem 1.5rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(1rem) scale(0.9);
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-lg);
+            pointer-events: none;
+        }
+
+        .save-indicator.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .save-indicator svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 1.25rem 2rem;
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .header-content {
+                padding: 1.25rem 1rem;
+            }
+
+            .main-content {
+                padding: 1.5rem 1rem 3rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+
+            .save-indicator {
+                bottom: 1.5rem;
+                right: 1rem;
+                left: 1rem;
+                justify-content: center;
+            }
+
+            .nav-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.8125rem;
+            }
+        }
+
+        /* Smooth transitions for view changes */
+        .view-transition-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .view-transition-exit-active {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: var(--transition-smooth);
+        }
+
+        .view-transition-enter {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .view-transition-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: var(--transition-smooth);
+        }
+
+        /* Focus styles for accessibility */
+        *:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        /* Custom selection color */
+        ::selection {
+            background-color: var(--accent-muted);
+            color: var(--text-primary);
+        }
+
+        /* Pulse animation for empty state */
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Progress ring */
+        .progress-ring {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+        }
+
+        .progress-ring-circle {
+            stroke: var(--accent-primary);
+            stroke-dasharray: 126;
+            stroke-dashoffset: 126;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .progress-ring-bg {
+            stroke: var(--bg-tertiary);
+        }
+
+        /* Keyboard shortcuts hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .keyboard-hint.show {
+            opacity: 1;
+        }
+
+        .kbd {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.125rem 0.375rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-smooth);
+            z-index: 50;
+        }
+
+        .fab:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 20px -5px rgba(99, 102, 241, 0.3);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .fab svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Export modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition-base);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .modal-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+
+        .button {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-family: inherit;
+        }
+
+        .button-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: var(--accent-primary-hover);
+        }
+
+        .button-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .button-secondary:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Empty state illustration */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .empty-state-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.1;
+        }
+
+        .empty-state-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Character counter */
+        .character-count {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 300;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--accent-primary);
+        }
+
+        .toast-message {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef } = React;
+
+        const App = () => {
+            const [currentView, setCurrentView] = useState('morning');
+            const [data, setData] = useState({
+                morning: {
+                    needs: '',
+                    honor: '',
+                    support: ''
+                },
+                evening: {
+                    noticed: '',
+                    surprising: ''
+                }
+            });
+            const [showSaveIndicator, setShowSaveIndicator] = useState(false);
+            const [hasExistingEntry, setHasExistingEntry] = useState(false);
+            const [showExportModal, setShowExportModal] = useState(false);
+            const [showKeyboardHint, setShowKeyboardHint] = useState(false);
+            const [completionProgress, setCompletionProgress] = useState(0);
+            const [showToast, setShowToast] = useState(false);
+            const [toastMessage, setToastMessage] = useState('');
+            const navIndicatorRef = useRef(null);
+            const morningButtonRef = useRef(null);
+            const eveningButtonRef = useRef(null);
+
+            // Update nav indicator position
+            useEffect(() => {
+                const updateIndicator = () => {
+                    if (navIndicatorRef.current && morningButtonRef.current && eveningButtonRef.current) {
+                        const activeButton = currentView === 'morning' ? morningButtonRef.current : eveningButtonRef.current;
+                        const { offsetLeft, offsetWidth } = activeButton;
+                        navIndicatorRef.current.style.left = `${offsetLeft}px`;
+                        navIndicatorRef.current.style.width = `${offsetWidth}px`;
+                    }
+                };
+
+                updateIndicator();
+                window.addEventListener('resize', updateIndicator);
+                return () => window.removeEventListener('resize', updateIndicator);
+            }, [currentView]);
+
+            // Load data on mount
+            useEffect(() => {
+                const savedData = localStorage.getItem(todayKey);
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    setData(parsed);
+                    setHasExistingEntry(true);
+                    // If morning data exists, default to evening view
+                    if (parsed.morning && parsed.morning.needs) {
+                        setCurrentView('evening');
+                    }
+                }
+            }, [todayKey]);
+
+            // Calculate completion progress
+            useEffect(() => {
+                let filledFields = 0;
+                const totalFields = 5;
+                
+                if (data.morning.needs) filledFields++;
+                if (data.morning.honor) filledFields++;
+                if (data.morning.support) filledFields++;
+                if (data.evening.noticed) filledFields++;
+                if (data.evening.surprising) filledFields++;
+                
+                setCompletionProgress((filledFields / totalFields) * 100);
+            }, [data]);
+
+            // Keyboard shortcuts
+            useEffect(() => {
+                const handleKeyPress = (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        if (e.key === '1') {
+                            e.preventDefault();
+                            setCurrentView('morning');
+                        } else if (e.key === '2') {
+                            e.preventDefault();
+                            setCurrentView('evening');
+                        } else if (e.key === 'e') {
+                            e.preventDefault();
+                            handleExport();
+                        }
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyPress);
+                
+                // Show keyboard hint after 3 seconds
+                setTimeout(() => setShowKeyboardHint(true), 3000);
+                
+                return () => window.removeEventListener('keydown', handleKeyPress);
+            }, []);
+
+            const handleExport = () => {
+                const allData = {};
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('needs-')) {
+                        allData[key] = JSON.parse(localStorage.getItem(key));
+                    }
+                }
+                
+                const dataStr = JSON.stringify(allData, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `needs-awareness-export-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                setShowExportModal(false);
+                showToastMessage('Data exported successfully!');
+            };
+
+            const showToastMessage = (message) => {
+                setToastMessage(message);
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
+            };
+
+            // Auto-save function with debouncing
+            useEffect(() => {
+                const timeoutId = setTimeout(() => {
+                    if (data.morning.needs || data.evening.noticed || data.evening.surprising) {
+                        localStorage.setItem(todayKey, JSON.stringify(data));
+                        setShowSaveIndicator(true);
+                        setTimeout(() => setShowSaveIndicator(false), 2000);
+                    }
+                }, 1000);
+
+                return () => clearTimeout(timeoutId);
+            }, [data, todayKey]);
+
+            const handleInputChange = (section, field, value) => {
+                setData(prev => ({
+                    ...prev,
+                    [section]: {
+                        ...prev[section],
+                        [field]: value
+                    }
+                }));
+            };
+
+            const CheckIcon = () => (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            );
+
+            const ExportIcon = () => (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            );
+
+            const CloseIcon = () => (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            );
+
+            const ProgressRing = ({ progress }) => {
+                const radius = 20;
+                const circumference = 2 * Math.PI * radius;
+                const offset = circumference - (progress / 100) * circumference;
+
+                return (
+                    <svg className="progress-ring" viewBox="0 0 48 48">
+                        <circle
+                            className="progress-ring-bg"
+                            cx="24"
+                            cy="24"
+                            r={radius}
+                            fill="none"
+                            strokeWidth="4"
+                        />
+                        <circle
+                            className="progress-ring-circle"
+                            cx="24"
+                            cy="24"
+                            r={radius}
+                            fill="none"
+                            strokeWidth="4"
+                            style={{ strokeDashoffset: offset }}
+                        />
+                    </svg>
+                );
+            };
+
+            const CharacterCount = ({ text, limit = 2000 }) => {
+                const count = text.length;
+                const percentage = (count / limit) * 100;
+                const color = percentage > 80 ? 'var(--text-secondary)' : 'var(--text-tertiary)';
+                
+                if (count === 0) return null;
+                
+                return (
+                    <span className="character-count" style={{ color }}>
+                        {count.toLocaleString()} characters
+                    </span>
+                );
+            };
+
+            const MorningCheckIn = () => (
+                <div className="content-section">
+                    <div className="section-card">
+                        <h2 className="section-title">Morning Check-In</h2>
+                        
+                        <div className="info-box">
+                            <div className="info-box-title">
+                                💭 Remember
+                            </div>
+                            <div className="info-box-text">
+                                This is data collection, not a to-do list. No judgment about what you list or whether you meet these needs.
+                            </div>
+                        </div>
+
+                        <div className="question-block">
+                            <div className="question-label">
+                                <span className="question-text">What do I actually need today?</span>
+                            </div>
+                            <p className="helper-text">
+                                Be as detailed as you like. Instead of "rest," try: "8 hours of sleep, cool room, weighted blanket, no alarms..."
+                            </p>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    className="large-textarea"
+                                    value={data.morning.needs}
+                                    onChange={(e) => handleInputChange('morning', 'needs', e.target.value)}
+                                    placeholder="List your needs here, without judgment..."
+                                />
+                                <CharacterCount text={data.morning.needs} />
+                            </div>
+                        </div>
+
+                        <div className="question-block">
+                            <div className="question-label">
+                                <span className="question-text">How will I honor that need?</span>
+                                <span className="optional-badge">optional</span>
+                            </div>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    value={data.morning.honor}
+                                    onChange={(e) => handleInputChange('morning', 'honor', e.target.value)}
+                                    placeholder="Any thoughts on honoring these needs..."
+                                />
+                            </div>
+                        </div>
+
+                        <div className="question-block">
+                            <div className="question-label">
+                                <span className="question-text">Who or what can support me in this?</span>
+                                <span className="optional-badge">optional</span>
+                            </div>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    value={data.morning.support}
+                                    onChange={(e) => handleInputChange('morning', 'support', e.target.value)}
+                                    placeholder="People, resources, or systems that might help..."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const EveningReflection = () => (
+                <div className="content-section">
+                    <div className="section-card">
+                        <h2 className="section-title">Evening Reflection</h2>
+                        
+                        <div className="info-box">
+                            <div className="info-box-title">
+                                🌙 Notice without fixing
+                            </div>
+                            <div className="info-box-text">
+                                This is about awareness, not achievement. Your needs are valid, whether or not they were met today.
+                            </div>
+                        </div>
+
+                        <div className="question-block">
+                            <div className="question-label">
+                                <span className="question-text">What did I notice about my needs today?</span>
+                                <span className="optional-badge">optional</span>
+                            </div>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    className="large-textarea"
+                                    value={data.evening.noticed}
+                                    onChange={(e) => handleInputChange('evening', 'noticed', e.target.value)}
+                                    placeholder="Any observations about your needs..."
+                                />
+                                <CharacterCount text={data.evening.noticed} />
+                            </div>
+                        </div>
+
+                        <div className="question-block">
+                            <div className="question-label">
+                                <span className="question-text">What felt surprising or new?</span>
+                                <span className="optional-badge">optional</span>
+                            </div>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    value={data.evening.surprising}
+                                    onChange={(e) => handleInputChange('evening', 'surprising', e.target.value)}
+                                    placeholder="Any unexpected insights..."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="app-container">
+                    <header className="header">
+                        <div className="header-content">
+                            <h1 className="date-display">{today}</h1>
+                            <p className="tagline">
+                                From "I don't know what I need" to "I am exquisitely aware of what I need"
+                            </p>
+                            <nav className="navigation">
+                                <div className="nav-indicator" ref={navIndicatorRef}></div>
+                                <button 
+                                    ref={morningButtonRef}
+                                    className={`nav-button ${currentView === 'morning' ? 'active' : ''}`}
+                                    onClick={() => setCurrentView('morning')}
+                                >
+                                    Morning Check-In
+                                </button>
+                                <button 
+                                    ref={eveningButtonRef}
+                                    className={`nav-button ${currentView === 'evening' ? 'active' : ''}`}
+                                    onClick={() => setCurrentView('evening')}
+                                >
+                                    Evening Reflection
+                                </button>
+                            </nav>
+                        </div>
+                    </header>
+
+                    <main className="main-content">
+                        {currentView === 'morning' ? <MorningCheckIn /> : <EveningReflection />}
+                    </main>
+
+                    <footer className="footer">
+                        <p>Your data is stored locally on this device only.</p>
+                    </footer>
+
+                    <div className={`save-indicator ${showSaveIndicator ? 'show' : ''}`}>
+                        <CheckIcon />
+                        <span>Saved</span>
+                    </div>
+
+                    <button className="fab" onClick={() => setShowExportModal(true)} title="Export data">
+                        <ExportIcon />
+                    </button>
+
+                    <div className={`keyboard-hint ${showKeyboardHint ? 'show' : ''}`}>
+                        Press <kbd>Ctrl</kbd>+<kbd>1</kbd> or <kbd>2</kbd> to switch views
+                    </div>
+
+                    <div className={`modal-overlay ${showExportModal ? 'show' : ''}`} onClick={(e) => {
+                        if (e.target === e.currentTarget) setShowExportModal(false);
+                    }}>
+                        <div className="modal">
+                            <div className="modal-header">
+                                <h3 className="modal-title">Export Your Data</h3>
+                                <button className="modal-close" onClick={() => setShowExportModal(false)}>
+                                    <CloseIcon />
+                                </button>
+                            </div>
+                            <div className="modal-content">
+                                <ProgressRing progress={completionProgress} />
+                                <p>Your awareness journey data will be exported as a JSON file that you can keep for your records or import later.</p>
+                                <p style={{ marginTop: '1rem' }}>
+                                    Today's completion: {Math.round(completionProgress)}%
+                                </p>
+                            </div>
+                            <div className="modal-actions">
+                                <button className="button button-secondary" onClick={() => setShowExportModal(false)}>
+                                    Cancel
+                                </button>
+                                <button className="button button-primary" onClick={handleExport}>
+                                    Export Data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={`toast ${showToast ? 'show' : ''}`}>
+                        <CheckIcon className="toast-icon" />
+                        <span className="toast-message">{toastMessage}</span>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
